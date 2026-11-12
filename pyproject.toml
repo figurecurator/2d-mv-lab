@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pose-mv-lab"
+version = "0.1.0"
+description = "Human-reviewed 2D pose-sheet animation experiments"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "Pillow>=10", "opencv-python-headless>=4.8"]
+
+[project.scripts]
+pose-mv = "pose_mv.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

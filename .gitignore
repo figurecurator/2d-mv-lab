@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 .env*
 runtime.local.json
+# Local production assets, prompts, videos and validation receipts
 projects/
 models/
 media/

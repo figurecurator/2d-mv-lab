@@ -66,3 +66,7 @@ The historical Rin v82 renderer was a targeted repair built on earlier outputs. 
 ## Distribution
 
 The original code and documentation in this repository are MIT licensed. Character artwork, source videos, audio, generated project assets, checkpoints, and third-party code are outside that grant and are not part of the public source archive. See [THIRD_PARTY.md](THIRD_PARTY.md). No GitHub repository is created by running these tools.
+
+## Local results and follow-up experiments
+
+Production outputs live under Git-ignored `projects/`. See [local storage conventions](docs/local-results.md), [the Rin breakdown experiment](docs/rin-breakdown-experiment.md), and [the residual-popping investigation plan](docs/interpolation-roadmap.md). The investigation plan is not an implemented backend change.

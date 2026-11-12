@@ -22,3 +22,9 @@
 원래 작성한 코드·문서는 MIT 라이선스로 준비했습니다. 원본 춤 영상·음원, 캐릭터 시트, 생성 원화, 모델 가중치와 외부 구현은 공개 소스에 포함하지 않습니다.
 
 설치 및 실행은 [영문 README](README.md), 게시할 내용과 상태는 [게시 계획](docs/publish-plan.md)을 참고하세요.
+
+## 로컬 결과물과 후속 실험
+
+결과물은 Git에서 제외된 `projects/` 아래에 버전별로 보관합니다. 로컬 목록은 `projects/RESULTS_INDEX.json`에 있습니다. [결과물 보관 규칙](docs/local-results.md)을 참고하세요.
+
+[린 연결 원화 시험 기록](docs/rin-breakdown-experiment.md)에는 수정 범위와 남은 문제를, [미세한 튐 개선 계획](docs/interpolation-roadmap.md)에는 현재 원화 교체 방식의 한계와 모델 비교 순서를 정리했습니다. 개선 계획의 알고리즘은 아직 구현하지 않았습니다.

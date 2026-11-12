@@ -1,6 +1,6 @@
 # Reducing residual popping
 
-Research and code review date: 2026-11-13. The approaches below are proposals; no new backend or algorithm described here has been implemented or benchmarked by this documentation commit.
+Research and code review date: 2026-11-13. This document records the original investigation plan. Subsequent local tests are documented in [interpolation comparison v04](interpolation-v04.md): twenty short runs and a full three-second native-RIFE follow-up. Those experiments do not change the public CLI or production default. Runtime limits in the candidate table below describe the planning-stage assessment; see the completed comparison for actual execution details.
 
 ## Primary issue in the current adapter
 

@@ -69,4 +69,4 @@ The original code and documentation in this repository are MIT licensed. Charact
 
 ## Local results and follow-up experiments
 
-Production outputs live under Git-ignored `projects/`. See [local storage conventions](docs/local-results.md), [the Rin breakdown experiment](docs/rin-breakdown-experiment.md), and [the residual-popping investigation plan](docs/interpolation-roadmap.md). The investigation plan is not an implemented backend change.
+Production outputs live under Git-ignored `projects/`. See [local storage conventions](docs/local-results.md), [the Rin breakdown experiment](docs/rin-breakdown-experiment.md), and [the residual-popping investigation plan](docs/interpolation-roadmap.md). See [completed interpolation experiments v04](docs/interpolation-v04.md) for twenty local comparisons and the improved native-RIFE follow-up. The public backend/default remains unchanged.

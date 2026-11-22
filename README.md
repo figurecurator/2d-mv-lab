@@ -41,6 +41,8 @@ pose-mv render ./projects/my-character/project.json ./renders/my-character-v01.m
   --weights /path/to/rife_v4.26.safetensors --ffmpeg ffmpeg
 ```
 
+`--backend rife` is the original adapter: it warps one whole endpoint drawing at a time with flow and face guards. `--backend rife-native` uses the model's own synthesized frame instead: both drawings are composited over the project's `background` colour and blended by RIFE's bidirectional warp and visibility mask, with no endpoint switch or guard. In the [v04 comparison](docs/interpolation-v04.md) this gave visibly smoother transitions, while crossing legs can still thin or merge. Its output is always opaque. Both need the same `--comfy-root` and `--weights`.
+
 On Windows PowerShell, write the command on one line or use PowerShell's continuation syntax. If the console script was installed into another Python environment, use `python -m pose_mv.cli` in the desired environment instead.
 
 The adapter currently calls `FrameInterpolationModelLoader._detect_and_load`, `extract_features`, `warp`, and the model's feature-cache interface. These are upstream implementation details, not a stable ComfyUI service API. A future upstream change can require an adapter update. A mismatching API raises an error; it does not quietly select another interpolation method. GPU is the tested path. Explicit `--device cpu` exists but is not validated for performance.
@@ -69,4 +71,4 @@ The original code and documentation in this repository are MIT licensed. Charact
 
 ## Local results and follow-up experiments
 
-Production outputs live under Git-ignored `projects/`. See [local storage conventions](docs/local-results.md), [the Rin breakdown experiment](docs/rin-breakdown-experiment.md), and [the residual-popping investigation plan](docs/interpolation-roadmap.md). See [completed interpolation experiments v04](docs/interpolation-v04.md) for twenty local comparisons and the improved native-RIFE follow-up. See [leg crossing repair v05](docs/leg-crossing-v05.md) for a manually annotated fix of the remaining crossing-leg defect. The public backend/default remains unchanged.
+Production outputs live under Git-ignored `projects/`. See [local storage conventions](docs/local-results.md), [the Rin breakdown experiment](docs/rin-breakdown-experiment.md), and [the residual-popping investigation plan](docs/interpolation-roadmap.md). See [completed interpolation experiments v04](docs/interpolation-v04.md) for twenty local comparisons and the improved native-RIFE follow-up. See [leg crossing repair v05](docs/leg-crossing-v05.md) for a manually annotated fix of the remaining crossing-leg defect. The native-RIFE path is available as `--backend rife-native`; there is still no default backend.

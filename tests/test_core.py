@@ -6,7 +6,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from pose_mv.core import ingest, protect_flow, read_project, sample_timeline
+from pose_mv.core import flatten, ingest, protect_flow, read_project, sample_timeline
+from pose_mv.render import make_motion
 
 
 class TimingTests(unittest.TestCase):
@@ -69,6 +70,25 @@ class GeometryTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "clipped"):
                 ingest(root / "sheet.png", root / "map.json", root / "poses")
             self.assertFalse((root / "poses").exists())
+
+
+class BackendTests(unittest.TestCase):
+    def test_flatten_composites_premultiplied_pixels_over_background(self):
+        pixels = np.zeros((1, 3, 4), np.float32)
+        pixels[0, 1] = [.5, 0, 0, .5]
+        pixels[0, 2] = [0, 1, 0, 1]
+        result = flatten(pixels, [200, 100, 0])
+        np.testing.assert_allclose(result[0, 0], [200 / 255, 100 / 255, 0], atol=1e-6)
+        np.testing.assert_allclose(result[0, 1], [.5 + 100 / 255, 50 / 255, 0], atol=1e-6)
+        np.testing.assert_allclose(result[0, 2], [0, 1, 0], atol=1e-6)
+
+    def test_model_backends_require_explicit_runtime_and_unknown_is_rejected(self):
+        self.assertIsNone(make_motion("hold", None, None, "cpu", [214, 214, 214]))
+        for backend in ["rife", "rife-native"]:
+            with self.assertRaisesRegex(ValueError, "--comfy-root and --weights"):
+                make_motion(backend, None, None, "cpu", [214, 214, 214])
+        with self.assertRaisesRegex(ValueError, "no silent fallback"):
+            make_motion("film", Path("."), Path("w"), "cpu", [214, 214, 214])
 
 
 if __name__ == "__main__":

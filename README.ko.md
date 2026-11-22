@@ -27,4 +27,4 @@
 
 결과물은 Git에서 제외된 `projects/` 아래에 버전별로 보관합니다. 로컬 목록은 `projects/RESULTS_INDEX.json`에 있습니다. [결과물 보관 규칙](docs/local-results.md)을 참고하세요.
 
-[린 연결 원화 시험 기록](docs/rin-breakdown-experiment.md)에는 수정 범위와 남은 문제를, [미세한 튐 개선 계획](docs/interpolation-roadmap.md)에는 현재 원화 교체 방식의 한계와 모델 비교 순서를 정리했습니다. [후속 비교 실험 v04](docs/interpolation-v04.md)에서는 20개 비교 시험과 네이티브 RIFE 3초 후속 영상을 만들었습니다. 네이티브 합성에서 전환의 자연스러움이 개선됐으며, 다리 교차 변형은 남습니다. [다리 교차 보정 v05](docs/leg-crossing-v05.md)에서는 교차 구간 21프레임의 양쪽 다리를 수동으로 분리·변형해 다리가 사라지는 현상을 줄였습니다. 끝 원화에서 신발 모양이 바뀌는 문제와 메시 늘어짐은 남습니다. 공개 CLI와 기본 공정은 유지했습니다.
+[린 연결 원화 시험 기록](docs/rin-breakdown-experiment.md)에는 수정 범위와 남은 문제를, [미세한 튐 개선 계획](docs/interpolation-roadmap.md)에는 현재 원화 교체 방식의 한계와 모델 비교 순서를 정리했습니다. [후속 비교 실험 v04](docs/interpolation-v04.md)에서는 20개 비교 시험과 네이티브 RIFE 3초 후속 영상을 만들었습니다. 네이티브 합성에서 전환의 자연스러움이 개선됐으며, 다리 교차 변형은 남습니다. [다리 교차 보정 v05](docs/leg-crossing-v05.md)에서는 교차 구간 21프레임의 양쪽 다리를 수동으로 분리·변형해 다리가 사라지는 현상을 줄였습니다. 끝 원화에서 신발 모양이 바뀌는 문제와 메시 늘어짐은 남습니다. 네이티브 RIFE 합성은 `--backend rife-native`로 사용할 수 있습니다. 기본 백엔드는 여전히 없으며 명시적으로 골라야 합니다.

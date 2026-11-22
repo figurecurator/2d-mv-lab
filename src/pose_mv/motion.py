@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .core import protect_flow
+from .core import flatten, protect_flow
 
 
 class RifeMotion:
@@ -66,3 +66,33 @@ class RifeMotion:
             result = self.original_warp(self.a if choose_a else self.b, flow)
             pixels = result[0, :, :self.height, :self.width].float().permute(1, 2, 0).cpu().numpy()
             return np.clip(pixels, 0, 1), {**audit, "endpoint": "a" if choose_a else "b"}
+
+
+class NativeRifeMotion(RifeMotion):
+    """Model-native RIFE RGB synthesis on the final opaque background.
+
+    Both drawings are first composited over the render background, then the
+    model's own bidirectional warp and visibility mask produce each frame. No
+    endpoint switching or flow/face guard is applied. The output is opaque, so
+    this backend cannot produce a transparent render.
+    """
+
+    def __init__(self, comfy_root: Path, weights: Path, device: str = "cuda", background=(214, 214, 214)):
+        super().__init__(comfy_root, weights, device)
+        self.model.warp = self.original_warp
+        self.background = background
+
+    def pair(self, a, b):
+        with self.torch.inference_mode():
+            self.sa = self.tensor(flatten(a, self.background))
+            self.sb = self.tensor(flatten(b, self.background))
+            self.cache = {"img0": self.model.extract_features(self.sa), "img1": self.model.extract_features(self.sb)}
+            self.height, self.width = a.shape[:2]
+
+    def at(self, u, face_box=None):
+        with self.torch.inference_mode():
+            result = self.model(self.sa, self.sb, float(u), cache=self.cache)
+            rgb = result[0, :3, :self.height, :self.width].float().permute(1, 2, 0).cpu().numpy()
+        rgb = np.clip(rgb, 0, 1)
+        opaque = np.ones(rgb.shape[:2] + (1,), rgb.dtype)
+        return np.concatenate([rgb, opaque], axis=-1), {"synthesis": "native-rgb"}

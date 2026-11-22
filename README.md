@@ -45,6 +45,10 @@ On Windows PowerShell, write the command on one line or use PowerShell's continu
 
 The adapter currently calls `FrameInterpolationModelLoader._detect_and_load`, `extract_features`, `warp`, and the model's feature-cache interface. These are upstream implementation details, not a stable ComfyUI service API. A future upstream change can require an adapter update. A mismatching API raises an error; it does not quietly select another interpolation method. GPU is the tested path. Explicit `--device cpu` exists but is not validated for performance.
 
+## Generate drawings locally
+
+`pose-mv frames` and `pose-mv generate` produce key drawings with a local ComfyUI server (Qwen-Image-Edit with the character reference and a pose guide). See [local generation](docs/local-generation.md). Generated drawings need the same review as any other drawing.
+
 ## Character workflow
 
 1. Pick one approved design, one face crop, one costume, and one line/color style. Keep the immutable reference and its digest in the private project record.

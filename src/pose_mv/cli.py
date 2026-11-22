@@ -24,6 +24,14 @@ def main():
     movie.add_argument("--comfy-root", type=Path)
     movie.add_argument("--weights", type=Path)
     movie.add_argument("--device", default="cuda")
+    guides = commands.add_parser("frames", help="Save source-video frames as pose guides")
+    guides.add_argument("video", type=Path)
+    guides.add_argument("output", type=Path)
+    guides.add_argument("--frames", type=int, nargs="+", required=True)
+    draw = commands.add_parser("generate", help="Generate pose drawings with a local ComfyUI server")
+    draw.add_argument("plan", type=Path)
+    draw.add_argument("output", type=Path)
+    draw.add_argument("--server", default="http://127.0.0.1:8188")
     sheet = commands.add_parser("contact")
     sheet.add_argument("video", type=Path)
     sheet.add_argument("output", type=Path)
@@ -40,6 +48,12 @@ def main():
     elif args.action == "render":
         receipt = render(args.project, args.output, args.ffmpeg, args.backend, args.comfy_root, args.weights, args.device)
         print(f"Validated {receipt['frames']} decoded frames")
+    elif args.action == "frames":
+        from .generate import extract_frames
+        print(f"Saved {len(extract_frames(args.video, args.frames, args.output))} pose guides")
+    elif args.action == "generate":
+        from .generate import ComfyClient, generate
+        print(f"Generated {len(generate(args.plan, args.output, ComfyClient(args.server)))} drawings for review")
     elif args.action == "contact":
         contact(args.video, args.output, args.every)
 

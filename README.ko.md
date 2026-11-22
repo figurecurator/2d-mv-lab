@@ -12,6 +12,10 @@
 
 실제 수행 단계, 수동 작업, 재현 범위는 [벨리무맙 제작 기록](docs/belimumab-pilot.md)에 구분해 두었습니다.
 
+## 로컬 원화 생성
+
+`pose-mv frames`와 `pose-mv generate`로 로컬 ComfyUI(Qwen-Image-Edit, 캐릭터 기준 그림 + 포즈 가이드)에서 원화를 만듭니다. [로컬 생성 문서](docs/local-generation.md)를 참고하세요. 생성한 원화도 기존과 같이 검수가 필요합니다.
+
 ## 공개 구성
 
 - `src/pose_mv`: 시트 분리·배치, 타임라인, RIFE 어댑터, 렌더와 검수 CLI.

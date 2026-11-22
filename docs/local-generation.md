@@ -1,6 +1,6 @@
 # Local pose-drawing generation
 
-Status: first implementation, not yet validated on the reference GPU machine. Until the comparison in "First test" is reviewed, earlier drawings made with a hosted image generator remain the baseline.
+Status: runs on the reference GPU machine (RTX 5070 12.8 GB, ComfyUI 0.40.0), but poses must currently be described in text. Earlier drawings made with a hosted image generator remain the baseline until a full set is reviewed.
 
 ## Why
 
@@ -53,6 +53,21 @@ ComfyUI with the ComfyUI-GGUF custom node and the models named in the plan insta
 ## First test
 
 Regenerate the twelve unique key poses of the Belimumab and Rin three-second pilots (source frames 36–95) with the same character references, then compare side by side with the existing drawings for identity consistency across poses, pose accuracy (hands, feet, crossing legs) and line/colour style. Record results under ignored `projects/experiments/`.
+
+## Results so far (2026-11-23)
+
+Belimumab frames 36 and 47, 40 steps, seed 1000, Q4_K_M model with about 4 GB offloaded to system RAM: about 9.3 minutes per image.
+
+| Variant | Result |
+| --- | --- |
+| Full character sheet + source frame | Identity, outfit and style match the sheet closely, but the pose is ignored (front-facing standing pose) |
+| Single front-view crop + source frame | Same: pose still ignored, so the sheet was not the cause |
+| Single crop + source frame + per-pose text (`prompt_extra`) | Follows the pose: frame 47 close; frame 36 arms crossed but too high, wrong facing direction, wink lost. Identity holds; small accessory/line drift |
+| Single crop + DWPose skeleton | Pose changes but is wrong; the detector misses crossed arms on these frames, and the figure is drawn smaller |
+
+Background removal edges were clean, including thin hair strands.
+
+Current recommendation: use a single-figure reference and write a short `prompt_extra` per pose that states left/right explicitly. The source frame alone does not transfer the pose with this model.
 
 ## Limits
 

@@ -65,9 +65,11 @@ Belimumab frames 36 and 47, 40 steps, seed 1000, Q4_K_M model with about 4 GB of
 | Single crop + source frame + per-pose text (`prompt_extra`) | Follows the pose: frame 47 close; frame 36 arms crossed but too high, wrong facing direction, wink lost. Identity holds; small accessory/line drift |
 | Single crop + DWPose skeleton | Pose changes but is wrong; the detector misses crossed arms on these frames, and the figure is drawn smaller |
 
+A rewritten frame-36 description (two seeds) fixed arm height and the missing brooch, but left/right properties stayed uncontrolled: facing direction was frontal or mirrored, and the wink landed on the wrong eye or both eyes closed. One seed also changed the trouser shape.
+
 Background removal edges were clean, including thin hair strands.
 
-Current recommendation: use a single-figure reference and write a short `prompt_extra` per pose that states left/right explicitly. The source frame alone does not transfer the pose with this model.
+Current recommendation: use a single-figure reference and a short `prompt_extra` per pose for arm/leg positions and accessories. Do not rely on text for left/right (facing, which eye winks): generate several seeds and pick, or mirror a correct result when the outfit is symmetric. The source frame alone does not transfer the pose with this model.
 
 ## Limits
 

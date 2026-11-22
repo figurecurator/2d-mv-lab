@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 
 from .core import ingest, read_project
-from .render import contact, render
+from .render import BACKENDS, contact, render
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     movie = commands.add_parser("render")
     movie.add_argument("project", type=Path)
     movie.add_argument("output", type=Path)
-    movie.add_argument("--backend", choices=["rife", "hold"], required=True)
+    movie.add_argument("--backend", choices=list(BACKENDS), required=True)
     movie.add_argument("--ffmpeg", default="ffmpeg")
     movie.add_argument("--comfy-root", type=Path)
     movie.add_argument("--weights", type=Path)

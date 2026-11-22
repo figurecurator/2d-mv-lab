@@ -57,6 +57,12 @@ def rgba(path: Path) -> np.ndarray:
     return pixels
 
 
+def flatten(pixels: np.ndarray, background) -> np.ndarray:
+    """Composite premultiplied RGBA in [0, 1] over an opaque RGB background given in 0-255."""
+    bg = np.asarray(background, np.float32).reshape(1, 1, 3) / 255
+    return pixels[..., :3] + bg * (1 - pixels[..., 3:4])
+
+
 def alpha_box(pixels: np.ndarray) -> tuple[int, int, int, int]:
     yy, xx = np.where(pixels[..., 3] > 16)
     if len(xx) == 0:

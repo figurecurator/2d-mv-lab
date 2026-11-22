@@ -14,6 +14,25 @@ from PIL import Image
 from .core import read_project, rgba, sample_timeline, sha256
 
 
+BACKENDS = ("rife", "rife-native", "hold")
+
+
+def make_motion(backend: str, comfy_root: Path | None, weights: Path | None,
+                device: str, background) -> object | None:
+    """Create the interpolation backend; refuse anything not chosen explicitly."""
+    if backend == "hold":
+        return None
+    if backend not in BACKENDS:
+        raise ValueError(f"Choose one of {', '.join(BACKENDS)} explicitly; no silent fallback")
+    if comfy_root is None or weights is None:
+        raise ValueError(f"{backend} requires --comfy-root and --weights")
+    if backend == "rife":
+        from .motion import RifeMotion
+        return RifeMotion(comfy_root, weights, device)
+    from .motion import NativeRifeMotion
+    return NativeRifeMotion(comfy_root, weights, device, background)
+
+
 def render(project: Path, output: Path, ffmpeg: str, backend: str,
            comfy_root: Path | None = None, weights: Path | None = None,
            device: str = "cuda") -> dict:
@@ -33,15 +52,8 @@ def render(project: Path, output: Path, ffmpeg: str, backend: str,
         pixels = pixels.astype(np.float32) / 255
         pixels[..., :3] *= pixels[..., 3:4]
         images.append(pixels)
-    if backend == "rife":
-        if comfy_root is None or weights is None:
-            raise ValueError("rife requires --comfy-root and --weights")
-        from .motion import RifeMotion
-        motion = RifeMotion(comfy_root, weights, device)
-    elif backend == "hold":
-        motion = None
-    else:
-        raise ValueError("Choose rife or hold explicitly; no silent fallback")
+    background_rgb = data.get("background", [214, 214, 214])
+    motion = make_motion(backend, comfy_root, weights, device, background_rgb)
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = output.with_suffix(output.suffix + ".partial")
     start, end = data["source_range"]
@@ -63,7 +75,7 @@ def render(project: Path, output: Path, ffmpeg: str, backend: str,
     process = subprocess.Popen(command, stdin=subprocess.PIPE)
     audit = []
     previous_pair = None
-    background = np.array(data.get("background", [214, 214, 214]), np.float32).reshape(1, 1, 3)
+    background = np.array(background_rgb, np.float32).reshape(1, 1, 3)
     try:
         for n in range(count):
             source_frame = start + n * sfps / fps
@@ -108,7 +120,7 @@ def render(project: Path, output: Path, ffmpeg: str, backend: str,
     if decoded != count or any(b <= a for a, b in zip(timestamps, timestamps[1:])):
         raise ValueError(f"Decode/timestamp check failed: {decoded}/{count}")
     os.rename(temporary, output)
-    receipt = {"backend": backend, "frames": count, "fps": fps, "duration_seconds": duration,
+    receipt = {"backend": backend, "background": background_rgb, "frames": count, "fps": fps, "duration_seconds": duration,
                "canvas": [width, height], "inputs_sha256": inputs, "output_sha256": sha256(output),
                "python": platform.python_version(), "opencv": cv2.__version__, "numpy": np.__version__,
                "ffmpeg_version": subprocess.check_output([ffmpeg, "-version"], text=True).splitlines()[0],

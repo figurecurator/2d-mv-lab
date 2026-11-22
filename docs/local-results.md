@@ -10,6 +10,7 @@ The local collection includes:
 - `projects/brainrot/rin-legacy/v82/`: previous Rin videos.
 - `projects/review/higgsfield-belimumab/`: comparison input.
 - `projects/experiments/interpolation-v04/`: twenty interpolation comparisons, native-RIFE full-clip follow-up, local scripts and receipts; see [the experiment report](interpolation-v04.md).
+- `projects/experiments/leg-crossing-v05/`: manually annotated crossing-leg repair on top of the native-RIFE clip; selected clip, variants, annotations and receipts; see [the experiment report](leg-crossing-v05.md).
 - `projects/deliverables/2026-11-13/`: previous delivery files.
 
 `projects/RESULTS_INDEX.json` identifies the latest local result. `projects/collection_manifest.json` records hashes for the initial collection snapshot. It is not a continuously updated manifest for every later experiment. `projects/README.local.txt` provides local navigation.

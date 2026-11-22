@@ -25,7 +25,7 @@ These are observations for one character and motion interval, not a general mode
 
 The same 21-key project was rendered with native RIFE RGB synthesis on the fixed gray background, using the existing checkpoint and timing. This uses the model's final synthesized output rather than the custom whole-endpoint switch and flow/face guards.
 
-The side-by-side review supports a visible improvement in transition continuity. Crossing legs can still become thin, merged or warped: visibility and anatomy through occlusion need further work. This remaining defect does not negate the continuity improvement. The next experiment should focus on the crossing interval and explicit front/back limb handling before adopting a new default.
+The side-by-side review supports a visible improvement in transition continuity. Crossing legs can still become thin, merged or warped: visibility and anatomy through occlusion need further work. This remaining defect does not negate the continuity improvement. The next experiment should focus on the crossing interval and explicit front/back limb handling before adopting a new default. That follow-up is documented in [leg crossing repair v05](leg-crossing-v05.md).
 
 Both full clips decoded to 180 frames at 720x1280, with no figure contact at the frame edges. Decoded audio was identical. Maximum pixel-step changed from about 14.60 to 14.27; this is a diagnostic, not evidence that the visual improvement is only that numerical difference.
 
